@@ -1,0 +1,69 @@
+<button type = "button" class="preview-button" (click) = "goToPreview()">Preview Mode</button>
+<div class="table">
+	<div class="thead">
+		<div class="tr">
+			<div class="td">Event ID</div>
+			<div class="td">Event Name</div>
+			<div class="td">Home Win</div>
+            <div class="td">Draw</div>	
+            <div class="td">Away Win</div>	
+            <div class="td">Event Start Date</div>			
+		</div>
+    </div>
+    <ng-container *ngIf = "events$">
+        <div class="tbody" *ngFor = "let event of events$ | async" >
+            <div *ngIf="editID !== event.eventID"  class="tr">
+                <div class="td">{{event.eventID}}</div>
+                <div (click) = "editableRow(event.eventID)" class="td">{{event.eventName}}</div>
+                <div (click) = "editableRow(event.eventID)" class="td">{{event.homeWin?.toFixed(2)}}</div>
+                <div (click) = "editableRow(event.eventID)" class="td">{{event.draw?.toFixed(2)}}</div>
+                <div (click) = "editableRow(event.eventID)" class="td">{{event.awayWin?.toFixed(2)}}</div>
+                <div (click) = "editableRow(event.eventID)" class="td">{{event.startTime}}</div>
+                <button type="button" (click) = "deleteEvent(event.eventID)">Delete</button> 
+                <button disabled type="submit" >Save</button>
+            </div>            
+            <ng-container *ngIf="editID === event.eventID">
+                <form  #editForm="ngForm" (ngSubmit) = "editEvent(editForm.value)" class="tr" >
+                    <div class="td">{{event.eventID}}</div> 
+                    <div class="td">
+                        <input  type="text" #eventName="ngModel" [ngModel]="event.eventName" name="eventName" >
+                    </div>             
+                    <ng-container ngModelGroup="odds" #odds="ngModelGroup" appIsOddsCorrect>
+                        <div class="td">
+                            <input #homeWin="ngModel" [ngModel]="event.homeWin" name="homeWin" type="text">
+                        </div>            
+                        <div class="td">
+                            <input #draw="ngModel" [ngModel]="event.draw" name="draw" type="text">
+                        </div>            
+                        <div class="td">
+                            <input #awayWin="ngModel" [ngModel]="event.awayWin" name="awayWin" type="text">
+                        </div>
+                                      
+                    </ng-container>            
+                    <div class="td">
+                        <input #startTime="ngModel" [ngModel]="event.startTime" name="startTime" type="text" appIsDateCorrect>                                                     
+                    </div>                    
+                    
+                    <button type="button" (click) = "deleteEvent(event.eventID)">Delete</button> 
+                    <button [disabled]="editForm.pristine || editForm.invalid" type="submit" >Save</button>
+                    
+                </form>	
+                <div class="tr" *ngIf="startTime.errors || odds.errors?.wrongOdd || odds.errors?.sureBet">
+                    <div class = "td empty"></div>
+                    <div class="td error">
+                    <p *ngIf="startTime.dirty && startTime.errors?.incorrectDateFormat"
+                        class="message-error">Event Start Date and Time should be in format "DD/MM/YYYY HH:MM"</p>
+                    <p *ngIf="startTime.errors?.inexistantDate" class="message-error">Please enter an existing date !!!</p> 
+                    <p *ngIf="odds.errors?.wrongOdd" class="message-error">
+                        The odds should be numbers, greater or equal to 1.00</p>
+                    <p *ngIf="odds.errors?.sureBet" class="message-error">
+                    Incorrect odds. Sure bet possibility !!!</p> 
+                    </div> 
+                </div>
+                
+            </ng-container>
+                
+        </div>
+    </ng-container>
+<button type="button" (click) = "addEvent()">Add New Event</button> 
+</div>

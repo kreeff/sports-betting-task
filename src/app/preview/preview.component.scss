@@ -1,0 +1,31 @@
+  button {
+    position: absolute;
+    top: 10px;
+    right: 15%;
+    width: 110px;
+  }
+  th, td {
+    height: 15px;    
+    text-align:center;
+    vertical-align: top;    
+    border: 1px solid;    
+  }
+  tbody tr:nth-child(even) {background-color: honeydew;}
+  tbody tr:nth-child(odd) {background-color: aliceblue;}
+
+  tbody tr.start-passed {
+      background-color:lightsalmon;
+  }
+
+  td:nth-child(1) { width: 400px; }
+  td:nth-child(2) { width: 150px; }
+  td:nth-child(3) { width: 150px; }
+  td:nth-child(4) { width: 150px; }
+  td:nth-child(5) { width: 200px; }
+
+  table {
+    border-collapse: separate;
+    border-spacing: 3px;
+    margin: 0 auto;
+    margin-top: 50px;
+  }

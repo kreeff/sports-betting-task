@@ -1,0 +1,27 @@
+<button (click) = "goToEdit()">Edit Mode</button>
+<table class="preview">
+    <thead>
+        <tr>
+            <th>Event Name</th>
+            <th>Home Win</th>
+            <th>Draw</th>
+            <th>Away Win</th>
+            <th>Event Start Date</th>
+        </tr>
+    </thead>
+    
+    <tbody>
+        <ng-container *ngIf = "events$">
+            <tr *ngFor = "let event of (events$ | async)"  [ngClass]="{'start-passed': isStartPassed(event.startTime)}" >
+                <td>{{event.eventName}}</td>
+                <td (click)="betHandler(event.eventID, 'Home Win', event.homeWin, event.startTime)">{{event.homeWin?.toFixed(2)}}</td>
+                <td (click)="betHandler(event.eventID, 'Draw', event.draw, event.startTime)">{{event.draw?.toFixed(2)}}</td>
+                <td (click)="betHandler(event.eventID, 'Away Win', event.awayWin, event.startTime)">{{event.awayWin?.toFixed(2)}}</td>
+                <td >{{event.startTime}}</td>
+                        
+            </tr>
+        </ng-container>
+    </tbody>
+       
+</table>
+
